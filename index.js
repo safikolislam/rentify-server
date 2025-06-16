@@ -27,6 +27,19 @@ async function run() {
       const allCars = await carCollection.find().toArray();
       res.send(allCars);
     });
+   
+app.get('/cars/home', async (req, res) => {
+  try {
+    const cars = await carCollection.find()
+      .sort({ dateAdded: -1 }) // newest first
+      .limit(8)
+      .toArray();
+    res.send(cars);
+  } catch (err) {
+    res.status(500).send({ error: 'Failed to fetch homepage cars' });
+  }
+});
+
 
   
     app.post('/add-car', async (req, res) => {
