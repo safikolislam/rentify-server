@@ -31,7 +31,7 @@ async function run() {
 app.get('/cars/home', async (req, res) => {
   try {
     const cars = await carCollection.find()
-      .sort({ dateAdded: -1 }) // newest first
+      .sort({ dateAdded: -1 }) 
       .limit(8)
       .toArray();
     res.send(cars);
@@ -40,7 +40,19 @@ app.get('/cars/home', async (req, res) => {
   }
 });
 
+app.get('/cars/:id', async (req, res) => {
+  const id = req.params.id;
 
+  try {
+    const car = await carCollection.findOne({ _id: new ObjectId(id) });
+    if (!car) {
+      return res.status(404).send({ error: 'Car not found' });
+    }
+    res.send(car);
+  } catch (error) {
+    res.status(400).send({ error: 'Invalid ID format' });
+  }
+});
   
     app.post('/add-car', async (req, res) => {
       const carData = req.body;
