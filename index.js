@@ -9,12 +9,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const client = new MongoClient(process.env.MONGODB_URI, {
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.mofktee.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+
+const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  },
+  }
 });
 
 async function run() {
